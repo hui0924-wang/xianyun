@@ -92,10 +92,11 @@ export default {
       });
       // console.log(airport);
       // 起飞时间
-      let flightTimes = this.options.flightTimes.map(v => ({
-        label: `${v.from}:00-${v.to}:00`,
-        value: v.from + "/" + v.to
-      }));
+      let flightTimes = this.options.flightTimes.map(v => {
+        v.from = v.from < 10 ? '0' + v.from : v.from;
+        v.to = v.to < 10 ? '0' + v.to : v.to;
+        return { label: `${v.from}:00-${v.to}:00`, value: v.from + "/" + v.to };
+      });
 
       // 航空公司
       let company = this.options.company.map(v => ({

@@ -136,16 +136,39 @@ export default {
       this.getList();
     },
     filterChange(filterObj) {
-      // console.log(filterObj);
-      // 先过滤第一个条件 航空公司
-      // 当航空公司过滤条件即filterObj.company 等于空字符串 或者 filterObj.company等于this.flightsData.flights.airline_name时  不过滤
+      console.log(filterObj);
+
       let filterList = this.flightsData.flights.filter(v => {
+        // 先过滤第一个条件 航空公司
+        // 当航空公司过滤条件即filterObj.company 等于空字符串 或者 filterObj.company等于this.flightsData.flights.airline_name时  不过滤
         let isOk1 =
           filterObj.company === "" || filterObj.company === v.airline_name;
-        return isOk1;
+
+        // 过滤第二个条件 ：起飞机场
+        let isOk2 =
+          filterObj.airport === "" || filterObj.airport === v.org_airport_name;
+
+        // 机型
+        let isOk3 = filterObj.sizes === "" || filterObj.sizes === v.plane_size;
+
+        // 起飞时间  只拿完整数据中 起飞时间（dep_time） 和 筛选条件中的 from | to 做比较即可 (6|12)
+        // 1. 获取 条件中的 开始时间
+        // 1.2 格式要注意 字符串的格式 加减运算
+        let flightTimes_from = filterObj.flightTimes.split("/")[0] - 0;
+        let flightTimes_to = filterObj.flightTimes.split("/")[1] - 0;
+        // 把 6:30 => 6.5 格式
+        let dep_time_start =
+          v.dep_time.split(":")[0] - 0 + (v.dep_time.split(":")[1] / 60 - 0);
+        //开始作比较
+        let isOk4 =
+          filterObj.flightTimes === "" ||
+          (dep_time_start >= flightTimes_from &&
+            dep_time_start <= flightTimes_to);
+        return isOk1 && isOk2 && isOk3 && isOk4;
       });
-      // console.log(filterList);
+      console.log(filterList);
       this.filterList = filterList;
+
       // 重新获取机票列表 进行分页
       this.getList();
     }
