@@ -45,7 +45,39 @@
     <!-- 正文结束 -->
 
     <!-- 4.侧边栏开始 -->
-    <div class="flights_aside">侧边栏</div>
+    <div class="flights_aside">
+      <div class="help">
+        <div class="el-row">
+          <div class="el-col el-col-8">
+            <i class="iconfont iconweibiaoti-_huabanfuben" style="color:#409EFF"></i>
+            <span>航协认证</span>
+          </div>
+          <div class="el-col el-col-8">
+            <i class="iconfont iconbaozheng" style="color:#008000"></i>
+            <span>出行保证</span>
+          </div>
+          <div class="el-col el-col-8">
+            <i class="iconfont icondianhua" style="color:#409EFF"></i>
+            <span>7X24</span>
+          </div>
+        </div>
+        <div class="phone">免费客服电话 : 4006345678转2</div>
+      </div>
+      <div class="history">
+        <div class="history_title">历史查询</div>
+        <div class="history_content">
+          <div class="history_row" v-for="(item,index) in historyList" :key="index">
+            <div class="his-left">
+              <p>{{item.departCity}} - {{item.destCity}}</p>
+              <p>{{item.departDate}}</p>
+            </div>
+            <div class="his-right">
+              <el-button size="mini" type="warning">选择</el-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- 4.侧边栏结束 -->
   </div>
 </template>
@@ -68,7 +100,6 @@ export default {
       filterList: [],
       // 被分页后的 机票列表
       currentFlights: [],
-
       // 分页对象
       page: {
         // 当前页码
@@ -79,7 +110,9 @@ export default {
         pageSize: 10,
         // 总条数
         total: 1
-      }
+      },
+      // 历史记录
+      historyList: []
     };
   },
   components: {
@@ -144,14 +177,15 @@ export default {
         let isOk1 =
           filterObj.company === "" || filterObj.company === v.airline_name;
 
-        // 过滤第二个条件 ：起飞机场
+        // 起飞机场
         let isOk2 =
           filterObj.airport === "" || filterObj.airport === v.org_airport_name;
 
         // 机型
         let isOk3 = filterObj.sizes === "" || filterObj.sizes === v.plane_size;
 
-        // 起飞时间  只拿完整数据中 起飞时间（dep_time） 和 筛选条件中的 from | to 做比较即可 (6|12)
+        // 起飞时间
+        // 只拿完整数据中 起飞时间（dep_time） 和 筛选条件中的 from | to 做比较即可 (6|12)
         // 1. 获取 条件中的 开始时间
         // 1.2 格式要注意 字符串的格式 加减运算
         let flightTimes_from = filterObj.flightTimes.split("/")[0] - 0;
@@ -176,6 +210,7 @@ export default {
   mounted() {
     // 重新获取机票列表 进行分页
     this.getList(true);
+    this.historyList = JSON.parse(localStorage.getItem("city"));
   }
 };
 </script>
@@ -195,6 +230,69 @@ export default {
   }
   .flights_aside {
     flex: 2;
+    margin-left: 15px;
+    margin-top: 20px;
+    .help {
+      border: 1px solid #ccc;
+
+      .el-row {
+        width: 100%;
+        display: flex;
+        padding: 10px 0;
+        > div {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-content: center;
+          > i {
+            width: 100%;
+            font-size: 40px;
+            text-align: center;
+          }
+          > span {
+            font-size: 12px;
+          }
+        }
+      }
+      .phone {
+        font-size: 14px;
+        padding: 10px 10px;
+        background-color: #f6f6f6;
+      }
+    }
+    .history {
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      padding: 0 10px;
+      .history_title {
+        height: 40px;
+        line-height: 40px;
+        border-bottom: 1px solid #ccc;
+      }
+      .history_row {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid #ccc;
+        &:last-child {
+          border-bottom: none;
+        }
+        .his-left {
+          > p:nth-child(1) {
+            font-size: 14px;
+            margin: 0 0 5px;
+          }
+          > p:nth-child(2) {
+            font-size: 12px;
+            color: #666;
+          }
+        }
+        .his-right {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
   }
 }
 </style>

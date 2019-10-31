@@ -120,7 +120,28 @@ export default {
       ];
     },
     handleGetTicket() {
+      // 路由跳转 编程式导航
       this.$router.push({ name: "air-flights", query: this.form });
+      // 从本地存储获得搜索历史记录
+      let cityStr = localStorage.getItem("city");
+      let arr = [];
+      if (cityStr) {
+        arr = JSON.parse(cityStr);
+      }
+      // 查重
+      const index = arr.findIndex(
+        v => JSON.stringify(this.form) === JSON.stringify(v)
+      );
+      // console.log(index);
+      if (index !== -1) {
+        // 删除原重复的
+        arr.splice(index, 1);
+      }
+      // 添加新的搜索值
+      arr.unshift(this.form);
+      console.log(arr);
+      // 重新存储到本地存储
+      localStorage.setItem("city", JSON.stringify(arr));
     }
   }
 };

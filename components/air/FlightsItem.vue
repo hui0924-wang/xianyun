@@ -1,7 +1,7 @@
 <template>
   <div class="flights_item">
     <div class="item_main" @click="isShow=!isShow">
-      <div class="item_name">{{data.airline_name}}{{data.flight_no}}---{{data.plane_size}}</div>
+      <div class="item_name">{{data.airline_name}}{{data.flight_no}}</div>
       <div class="item_depart_date">
         <P>{{data.dep_time}}</P>
         <p>{{data.org_airport_name}}{{data.org_airport_quay}}</p>
@@ -30,7 +30,11 @@
           <div class="seat_row_price">￥{{item.settle_price}}</div>
           <div class="seat_row_btns">
             <div>
-              <el-button type="warning" size="mini">选定</el-button>
+              <el-button
+                type="warning"
+                size="mini"
+                @click="handleGoToOrder(data.id,item.seat_xid)"
+              >选定</el-button>
               <p>剩余:{{item.discount}}</p>
             </div>
           </div>
@@ -77,6 +81,13 @@ export default {
       // console.log(`${hour}时${minutes}分`);
       return `${hour}时${minutes}分`;
     }
+  },
+  methods: {
+    handleGoToOrder(id, seat_xid) {
+      // 提交訂單，跳轉到提交訂單頁面
+      // console.log(id, seat_xid);
+      this.$router.push({ path: "/air/order", query: { id, seat_xid } });
+    }
   }
 };
 </script>
@@ -95,7 +106,7 @@ export default {
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      font-size: 13px;
+      font-size: 14px;
     }
 
     .item_depart_date,
@@ -132,7 +143,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 13px;
+      font-size: 14px;
     }
     .item_seat {
       flex: 5;
@@ -152,7 +163,7 @@ export default {
           flex: 4;
           font-size: 13px;
           span {
-            color: orange;
+            color: #008000;
           }
         }
         .seat_row_price {
@@ -165,6 +176,8 @@ export default {
           font-size: 13px;
           p {
             padding-top: 5px;
+            font-size: 14px;
+            color: #666;
           }
         }
       }
