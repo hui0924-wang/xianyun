@@ -178,9 +178,10 @@ export default {
         this.$message.warning("联系人输入不合法");
         return;
       }
-      // 对 form 做验证 用对象遍历的方法
+      //2. 对 form 做验证 用对象遍历的方法
       let isFormOk = true;
       for (const key in form) {
+        // 这里因为invoice是Boolean(默认为false),所以不能用if(!form[key])，否则会进入报错
         if (form[key] === "") {
           isFormOk = false;
           break;
@@ -191,11 +192,11 @@ export default {
         return;
       }
 
-      // 把users insurances 加回表单
+      // 3.把users insurances 加回表单
       form.users = this.users;
       form.insurances = this.insurances;
 
-      // 提交机票订单===============做到这里 还没有进行错误处理
+      // 提交机票订单
       // 获取vuex 中的 token
       const token = this.$store.state.user.userinfo.token;
       // 模拟token 失效
@@ -207,6 +208,11 @@ export default {
         })
         .then(res => {
           console.log(res);
+          this.$message.success({ message: res.data.message, duration: 1000 });
+          this.$router.push({
+            path: "/air/pay",
+            query: { id: res.data.data.id }
+          });
         });
     }
   },

@@ -57,10 +57,10 @@ export default {
           this.$store.dispatch("user/setUser", this.form).then(res => {
             // 弹出提示
             // 跳转页面
-            this.$message.success("登录成功");
+            this.$message.success({ message: "登陆成功", duration: 1000 });
             setTimeout(() => {
               this.$router.push("/");
-            }, 500);
+            }, 1000);
           });
         }
       });

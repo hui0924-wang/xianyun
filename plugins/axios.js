@@ -10,6 +10,19 @@ export default function ({ $axios, redirect }) {
     if (statusCode === 400) {
       //2 密码错误
       Message.warning(message)
+    } else if (statusCode === 401) {
+      //3
+      Message.warning({ message: "token过期 , 请重新登录!", duration: 1000 })
+      setTimeout(() => {
+        redirect('/user/login/0')
+      }, 1000);
+    } else if (statusCode === 403) {
+      //3
+      // Message.warning("请先登录!")
+      Message.warning({ message: "请先登录!", duration: 1000 })
+      setTimeout(() => {
+        redirect('/user/login/0')
+      }, 1000);
     }
   })
 }

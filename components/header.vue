@@ -69,10 +69,10 @@ export default {
       // 删除vuex中的用户信息
       localStorage.removeItem("userinfo");
       this.$store.commit("user/setUser", { token: "", user: {} });
-      this.$message.success("退出成功");
+      this.$message.success({ message: "退出成功", duration: 1000 });
       setTimeout(() => {
         this.$router.push("/user/login/0");
-      },500);
+      }, 1000);
     }
   }
 };
