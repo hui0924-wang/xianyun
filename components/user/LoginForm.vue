@@ -44,12 +44,15 @@ export default {
   methods: {
     submitLogin() {
       this.$refs.form.validate(valid => {
-        console.log(valid);
+        // console.log(valid);
         if (valid) {
           /**
            * 把token 和用户信息存储起来
            * 1.vuex中
            * 2.本地存储
+           */
+          /**
+           *  store.dispatch 仍旧返回 Promise：
            */
           this.$store.dispatch("user/setUser", this.form).then(res => {
             // 弹出提示

@@ -20,7 +20,7 @@
             <el-dropdown-item>消息</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <nuxt-link to="/user/login" class="login_link">
+        <nuxt-link to="/user/login/0" class="login_link">
           <div class="login_user" v-if="userinfo.token">
             <el-dropdown>
               <span class="el-dropdown-link">

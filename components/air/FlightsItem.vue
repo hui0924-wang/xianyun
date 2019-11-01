@@ -31,11 +31,12 @@
           <div class="seat_row_btns">
             <div>
               <el-button
+                style="width:100%"
                 type="warning"
                 size="mini"
                 @click="handleGoToOrder(data.id,item.seat_xid)"
               >选定</el-button>
-              <p>剩余:{{item.discount}}</p>
+              <p>剩余 : &nbsp;{{item.discount}}</p>
             </div>
           </div>
         </div>

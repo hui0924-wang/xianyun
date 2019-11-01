@@ -24,12 +24,13 @@ export const mutations = {
 // 3.定义actions 负责异步数据
 export const actions = {
   setUser(context, form) {
-
-    this.$axios.post("/accounts/login", form).then(res => {
-      // console.log(res);
+    // 第一个 return 是 文档要求必须加的
+    return this.$axios.post("/accounts/login", form).then(res => {
+      console.log(res);
       context.commit('setUser', res.data)
       // 把用户信息存入本地存储中
       localStorage.setItem('userinfo', JSON.stringify(res.data))
+      return res.data
     });
 
   }

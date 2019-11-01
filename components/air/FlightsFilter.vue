@@ -49,7 +49,7 @@
     </div>
     <div class="filters_btn">
       筛选:
-      <el-button type="primary" round size="mini" @click="handleClick">撤销</el-button>
+      <el-button type="primary" round size="mini" class="is_plain" @click="handleClick">撤销</el-button>
     </div>
   </div>
 </template>
@@ -73,7 +73,8 @@ export default {
       // 起飞时间
       flightTimes: "",
       company: "",
-      sizes: ""
+      sizes: "",
+      isPlain: false
     };
   },
   computed: {
@@ -93,8 +94,8 @@ export default {
       // console.log(airport);
       // 起飞时间
       let flightTimes = this.options.flightTimes.map(v => {
-        v.from = v.from < 10 ? '0' + v.from : v.from;
-        v.to = v.to < 10 ? '0' + v.to : v.to;
+        v.from = v.from < 10 ? "0" + v.from : v.from;
+        v.to = v.to < 10 ? "0" + v.to : v.to;
         return { label: `${v.from}:00-${v.to}:00`, value: v.from + "/" + v.to };
       });
 
@@ -151,6 +152,15 @@ export default {
   }
   .filters_btn {
     padding: 10px 0;
+    .is_plain {
+      background-color: #ecf5ff;
+      color: #4094ff;
+      &:hover,
+      &:focus {
+        background-color: #4094ff;
+        color: #fff;
+      }
+    }
   }
 }
 </style>
