@@ -66,7 +66,7 @@
           <el-form-item label="手机" style="width:50%">
             <el-input v-model="contactPhone">
               <template slot="append">
-                <div>发送验证码</div>
+                <div @click="sendCaptcha">发送验证码</div>
               </template>
             </el-input>
           </el-form-item>
@@ -74,7 +74,7 @@
             <el-input v-model="captcha"></el-input>
           </el-form-item>
           <el-form-item class="submit">
-            <el-button type="warning">提交订单</el-button>
+            <el-button type="warning" @click="sumitOrder">提交订单</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -129,6 +129,85 @@ export default {
         // 添加过,取消选择，删除id
         this.insurances.splice(index, 1);
       }
+    },
+    // 发送验证码
+    sendCaptcha() {
+      // 获取用户的手机号码
+      let reg = /^(?:(?:\+|00)86)?1[3-9]\d{9}$/;
+      if (reg.test(this.contactPhone)) {
+        this.$axios.post("/captchas", { tel: this.contactPhone }).then(res => {
+          console.log(res);
+        });
+      } else {
+        this.$message.warning("手机号码不合法");
+      }
+    },
+    sumitOrder() {
+      let form = {
+        // 乘机人
+        // users: this.users,
+        //保险id
+        // insurances: this.insurances,
+        // 联系人名字
+        contactName: this.contactName,
+        // 联系人电话
+        contactPhone: this.contactPhone,
+        // 是否需要发票
+        invoice: this.invoice,
+        // 座位id
+        seat_xid: this.seat_xid,
+        // 航班id
+        air: this.air,
+        // 验证码
+        captcha: this.captcha
+      };
+      // 对form 进行验证
+      // ！！！ insurances不用验证 users 单独验证
+
+      //1. 对乘机人 做验证
+      let isUserOk = true;
+      this.users.forEach(v => {
+        if (v.username === "" || v.id === "") {
+          //不合法
+          // break 跳出循环  forEach方法不能用break 跳出循环,可以用return false
+          isUserOk = false;
+          // return false;
+        }
+      });
+      if (!isUserOk) {
+        this.$message.warning("联系人输入不合法");
+        return;
+      }
+      // 对 form 做验证 用对象遍历的方法
+      let isFormOk = true;
+      for (const key in form) {
+        if (form[key] === "") {
+          isFormOk = false;
+          break;
+        }
+      }
+      if (!isFormOk) {
+        this.$message.warning("输入不合法");
+        return;
+      }
+
+      // 把users insurances 加回表单
+      form.users = this.users;
+      form.insurances = this.insurances;
+
+      // 提交机票订单===============做到这里 还没有进行错误处理
+      // 获取vuex 中的 token
+      const token = this.$store.state.user.userinfo.token;
+      // 模拟token 失效
+      // const token = "";
+
+      this.$axios
+        .post("/airorders", form, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        .then(res => {
+          console.log(res);
+        });
     }
   },
   computed: {
