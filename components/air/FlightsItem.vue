@@ -14,7 +14,7 @@
       <div class="item_price">
         <p>
           ￥
-          <span>{{data.base_price*0.5}}</span>
+          <span>{{data.base_price*0.3}}</span>
           起
         </p>
       </div>

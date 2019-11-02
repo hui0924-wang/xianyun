@@ -9,8 +9,8 @@
         <div class="pay_title">微信支付</div>
         <div class="pay_main">
           <div class="pay_code">
-            <canvas id="canvas"></canvas>
             <!-- 支付图片 -->
+            <canvas id="canvas"></canvas>
             <p>请使用微信扫一扫</p>
             <p>扫描二维码支付</p>
           </div>
@@ -52,7 +52,7 @@ export default {
           console.log("success!");
         });
 
-        // 定时发送请求，查询支付状态 
+        // 定时发送请求，查询支付状态
         let timeId = setInterval(() => {
           this.$axios
             .post(
@@ -67,11 +67,13 @@ export default {
               }
             )
             .then(res => {
-              console.log(res);
+              // console.log(res);
               if (res.data.trade_state === "SUCCESS") {
                 // 支付完成  清除定时器
                 clearInterval(timeId);
                 this.$message.success(res.data.statusTxt);
+              } else {
+                console.log(false);
               }
             });
         }, 3000);
@@ -89,7 +91,7 @@ export default {
     margin: 0 auto;
     .pay_price {
       padding: 10px 0;
-      height: 100px;
+      height: 70px;
       display: flex;
       justify-content: flex-end;
       align-items: flex-end;
