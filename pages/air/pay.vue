@@ -41,7 +41,7 @@ export default {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => {
-        console.log(res);
+        // console.log(res);
         this.order = res.data;
 
         // 画出支付二维码
@@ -49,7 +49,7 @@ export default {
         // weixin://wxpay/bizpayurl?pr=j47lXhM
         QRCode.toCanvas(canvas, res.data.payInfo.code_url, function(error) {
           if (error) console.error(error);
-          console.log("success!");
+          console.log("二维码转换成功");
         });
 
         // 定时发送请求，查询支付状态
@@ -73,7 +73,7 @@ export default {
                 clearInterval(timeId);
                 this.$message.success(res.data.statusTxt);
               } else {
-                console.log(false);
+                console.log("false");
               }
             });
         }, 3000);
