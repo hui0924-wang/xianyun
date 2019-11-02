@@ -132,7 +132,7 @@ export default {
       const index = arr.findIndex(
         v => JSON.stringify(this.form) === JSON.stringify(v)
       );
-      // console.log(index);
+      console.log(index);
       if (index !== -1) {
         // 删除原重复的
         arr.splice(index, 1);

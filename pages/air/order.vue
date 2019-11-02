@@ -21,7 +21,9 @@ export default {
   },
   data() {
     return {
-      ticket: {},
+      ticket: {
+        seat_infos: {}
+      },
       price: 0
     };
   },

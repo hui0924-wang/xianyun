@@ -28,7 +28,7 @@
       </div>
       <div class="price_ticket">
         <span>成人机票</span>
-        <span>¥{{ticket.base_price}}</span>
+        <span>¥{{ticket.seat_infos.settle_price}}</span>
         <span>×1</span>
       </div>
       <div class="price_oil">
@@ -49,7 +49,9 @@ export default {
   props: {
     ticket: {
       type: Object,
-      default: {}
+      default: {
+        seat_infos: {}
+      }
     },
     price: {
       type: Number,

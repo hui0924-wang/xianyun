@@ -87,7 +87,9 @@ export default {
   props: {
     ticket: {
       type: Object,
-      default: {}
+      default: {
+        seat_infos: {}
+      }
     }
   },
   data() {
@@ -218,9 +220,11 @@ export default {
   },
   computed: {
     price() {
+      console.log(this.ticket)
       let price = 0;
       // 机票费用
-      price += this.ticket.base_price;
+      price += this.ticket.seat_infos.settle_price;
+      // price += this.ticket.base_price;
       // 机建/燃油费用
       price += this.ticket.airport_tax_audlet;
       // 保险费用
